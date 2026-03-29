@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <Include>[POS-System.Api*]*</Include>
+          <Exclude>[POS-System.Business*]*,[POS-System.Common*]*,[POS-System.Data*]*,[POS-System.Domain*]*,[POS-System.IntegrationTests*]*</Exclude>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
