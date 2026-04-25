@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep *)",
+      "Bash(xargs wc *)",
+      "Bash(dotnet build *)",
+      "Bash(dotnet test *)",
+      "Read(//c/Users/03bri/.claude/projects/c--Users-03bri-Desktop-BakalauruiPSP-project/fa6374be-1e37-4d41-aac8-6acbe2f9ddf0/tool-results/**)",
+      "Bash(powershell -Command ' *)"
+    ]
+  }
+}
