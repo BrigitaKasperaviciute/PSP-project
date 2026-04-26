@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(cs|ts|tsx|js\\)$\")",
+      "Bash(dotnet sln *)",
+      "Bash(dotnet build *)"
+    ]
+  }
+}
