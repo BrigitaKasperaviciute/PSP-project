@@ -64,8 +64,8 @@ namespace POS_System.Business.AutoMapper
             //Cart item
             CreateMap<CartItemRequest, CartItem>();
             CreateMap<CartItem, CartItemResponse>()
-                .ForMember(dest => dest.ServiceReservationId, opt => opt.MapFrom(src => src.ServiceReservation.Id))
-                .ForMember(dest => dest.TimeSlotId, opt => opt.MapFrom(src => src.ServiceReservation.TimeSlotId));
+                .ForMember(dest => dest.ServiceReservationId, opt => opt.MapFrom(src => src.ServiceReservation != null ? (int?)src.ServiceReservation.Id : null))
+                .ForMember(dest => dest.TimeSlotId, opt => opt.MapFrom(src => src.ServiceReservation != null ? (int?)src.ServiceReservation.TimeSlotId : null));
 
             //Item discount
             CreateMap<ItemDiscountRequest, ItemDiscount>();

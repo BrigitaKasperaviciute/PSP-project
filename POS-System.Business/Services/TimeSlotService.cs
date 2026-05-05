@@ -37,7 +37,7 @@ namespace POS_System.Business.Services
                 throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
             }
 
-            timeSlot.IsAvailable = false;
+            _unitOfWork.TimeSlotRepository.Delete(timeSlot);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

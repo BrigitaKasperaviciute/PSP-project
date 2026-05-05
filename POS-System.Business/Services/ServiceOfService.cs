@@ -71,6 +71,7 @@ namespace POS_System.Business.Services
 
             var newService = new Service
             {
+                ServiceId = serviceToUpdate.ServiceId,
                 Name = serviceRequest.Name,
                 Description = serviceRequest.Description,
                 Duration = serviceRequest.Duration,

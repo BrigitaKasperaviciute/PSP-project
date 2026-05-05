@@ -8,7 +8,6 @@ using POS_System.Business.Dtos.Request;
 using POS_System.Common.Exceptions;
 using POS_System.Common.Constants;
 using POS_System.Business.Services.Interfaces;
-using Stripe;
 
 namespace POS_System.Business.Services.Services
 {
@@ -23,21 +22,20 @@ namespace POS_System.Business.Services.Services
 
         public async Task<CartResponse> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var cart = await _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken);
-            // TODO: add actual exception
-            if (cart is null)
-            {
-                throw new Exception("Cart not found.");
-            }
+            var cart = await _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken)
+                ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
             var mappedCart = _mapper.Map<CartResponse>(cart);
             return mappedCart;
         }
 
         public async Task<CartResponse> CreateCartAsync(CartRequest cartDto, CancellationToken cancellationToken)
         {
+            if (await _unitOfWork.EmployeeRepository.GetByIdAsync(cartDto.EmployeeVersionId, cancellationToken) is null)
+                throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
+
             var cart = new Cart {
                 EmployeeVersionId = cartDto.EmployeeVersionId,
-                Status = CartStatusEnum.IN_PROGRESS,
+                Status = CartStatusEnum.PENDING,
                 IsDeleted = false,
                 CartDiscountId = null,
                 DateCreated = DateTime.UtcNow
@@ -51,16 +49,12 @@ namespace POS_System.Business.Services.Services
 
         public async Task DeleteCartAsync(int id, CancellationToken cancellationToken)
         {
-            var cart = await _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken);
-            // TODO: add actual exception
-            if (cart is null)
-            {
-                throw new Exception("Cart not found.");
-            }
-            if (cart.Status != CartStatusEnum.IN_PROGRESS)
-            {
-                throw new Exception("Cannot delete a not in progress cart.");
-            }
+            var cart = await _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken)
+                ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
+
+            if (cart.Status == CartStatusEnum.COMPLETED || cart.Status == CartStatusEnum.REFUNDED)
+                throw new BadRequestException(ApplicationMessages.CLOSED_ORDER);
+
             _unitOfWork.CartRepository.Delete(cart);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -77,28 +71,23 @@ namespace POS_System.Business.Services.Services
 
         public async Task<CartDiscountResponse> ApplyDiscountForCartAsync(int id, ApplyDiscountRequest discountRequest, CancellationToken cancellationToken)
         {
-            var cartTask = _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken);
-            
-            var couponService = new CouponService();
-            var coupon = await couponService.GetAsync(discountRequest.DiscountCode, cancellationToken:cancellationToken)
+            var cart = await _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken)
                 ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
 
-            if (!coupon.Valid)
-                throw new BadRequestException(ApplicationMessages.EXPIRED_DISCOUNT);
-
-            var cart = await cartTask ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
-
-            if (cart.Status != CartStatusEnum.IN_PROGRESS)
+            if (cart.Status == CartStatusEnum.COMPLETED || cart.Status == CartStatusEnum.REFUNDED)
                 throw new BadRequestException(ApplicationMessages.CART_NOT_IN_PROGRESS);
+
+            var cartDiscount = await _unitOfWork.CartDiscountRepository.GetByIdStringAsync(discountRequest.DiscountCode, cancellationToken)
+                ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
 
             cart.CartDiscountId = discountRequest.DiscountCode;
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new CartDiscountResponse
             {
-                Id = coupon.Id,
-                Value = (int)(coupon.PercentOff is null ? coupon.AmountOff : coupon.PercentOff)!,
-                IsPercentage = coupon.AmountOff is null,
+                Id = cartDiscount.Id,
+                Value = cartDiscount.Value,
+                IsPercentage = cartDiscount.IsPercentage,
             };
         }
 
