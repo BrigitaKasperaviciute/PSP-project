@@ -96,6 +96,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IServiceReservationService, ServiceReservationService>();
             services.AddScoped<IItemDiscountService, ItemDiscountService>();
             services.AddScoped<ICartDiscountService, CartDiscountService>();
+            services.AddScoped<IStripeCouponService, StripeCouponService>();
             services.AddScoped<IPaymentService, PaymentService>();
 
             services.Configure<ApplicationLoggerOptions>(

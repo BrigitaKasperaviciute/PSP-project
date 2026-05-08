@@ -23,7 +23,8 @@ namespace POS_System.Business.Services
         IMapper mapper,
         ICartService cartService,
         IUnitOfWork unitOfWork,
-        SmsService smsService
+        SmsService smsService,
+        IStripeCouponService couponService
     ) : IPaymentService
     {
         public async Task<TransactionResponse> RegisterCashTransactionAsync(CashRequest cashRequest, CancellationToken token)
@@ -187,7 +188,6 @@ namespace POS_System.Business.Services
 
             if (cart.CartDiscountId is not null)
             {
-                var couponService = new CouponService();
                 var discount = await couponService.GetAsync(cart.CartDiscountId, cancellationToken: token);
 
                 if (discount.Valid)
@@ -364,8 +364,6 @@ namespace POS_System.Business.Services
 
         private async Task<(string, long)> CreateCouponForGiftCard(long totalPrice, GiftCardDetails giftCardDetails, CancellationToken token)
         {
-            var couponService = new CouponService();
-
             var giftCard = await unitOfWork.GiftCardRepository.GetByIdStringAsync(giftCardDetails.Code, token);
 
             if (giftCard is null || giftCard.Value <= 0 || giftCard.Date < DateOnly.FromDateTime(DateTime.UtcNow))

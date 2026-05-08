@@ -12,7 +12,7 @@ using Stripe;
 
 namespace POS_System.Business.Services.Services
 {
-    public class CartService(IUnitOfWork _unitOfWork, IMapper _mapper) : ICartService
+    public class CartService(IUnitOfWork _unitOfWork, IMapper _mapper, IStripeCouponService couponService) : ICartService
     {
         public async Task<PagedResponse<CartResponse>> GetAllAsync(CancellationToken cancellationToken, int pageNum, int pageSize)
         {
@@ -78,15 +78,13 @@ namespace POS_System.Business.Services.Services
         public async Task<CartDiscountResponse> ApplyDiscountForCartAsync(int id, ApplyDiscountRequest discountRequest, CancellationToken cancellationToken)
         {
             var cartTask = _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken);
-            
-            var couponService = new CouponService();
-            var coupon = await couponService.GetAsync(discountRequest.DiscountCode, cancellationToken:cancellationToken)
+            var cart = await cartTask ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
+
+            var coupon = await couponService.GetAsync(discountRequest.DiscountCode, cancellationToken)
                 ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
 
             if (!coupon.Valid)
                 throw new BadRequestException(ApplicationMessages.EXPIRED_DISCOUNT);
-
-            var cart = await cartTask ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
 
             if (cart.Status != CartStatusEnum.IN_PROGRESS)
                 throw new BadRequestException(ApplicationMessages.CART_NOT_IN_PROGRESS);

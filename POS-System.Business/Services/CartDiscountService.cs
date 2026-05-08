@@ -10,11 +10,10 @@ using Stripe;
 
 namespace POS_System.Business.Services
 {
-    public class CartDiscountService(IUnitOfWork _unitOfWork, IMapper _mapper) : ICartDiscountService
+    public class CartDiscountService(IUnitOfWork _unitOfWork, IMapper _mapper, IStripeCouponService couponService) : ICartDiscountService
     {
         public async Task<CartDiscountResponse> CreateCartDiscountAsync(CartDiscountRequest cartDiscountDto, CancellationToken cancellationToken)
         {
-            var couponService = new CouponService();
             var options = new CouponCreateOptions()
             {
                 Currency = "EUR",
@@ -46,8 +45,7 @@ namespace POS_System.Business.Services
             var cartDiscount = await _unitOfWork.CartDiscountRepository.GetByIdStringAsync(id, cancellationToken)
                 ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
 
-            var couponService = new CouponService();
-            await couponService.DeleteAsync(cartDiscount.Id);
+            await couponService.DeleteAsync(cartDiscount.Id, cancellationToken);
         }
 
         public async Task<CartDiscountResponse> GetCartDiscountByIdAsync(string id, CancellationToken cancellationToken)
