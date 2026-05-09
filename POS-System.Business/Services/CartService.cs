@@ -9,6 +9,7 @@ using POS_System.Common.Exceptions;
 using POS_System.Common.Constants;
 using POS_System.Business.Services.Interfaces;
 using Stripe;
+using System.Net;
 
 namespace POS_System.Business.Services.Services
 {
@@ -80,8 +81,17 @@ namespace POS_System.Business.Services.Services
             var cartTask = _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken);
             
             var couponService = new CouponService();
-            var coupon = await couponService.GetAsync(discountRequest.DiscountCode, cancellationToken:cancellationToken)
-                ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
+            Coupon coupon;
+
+            try
+            {
+                coupon = await couponService.GetAsync(discountRequest.DiscountCode, cancellationToken:cancellationToken)
+                    ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
+            }
+            catch (StripeException ex) when (ex.HttpStatusCode == HttpStatusCode.NotFound)
+            {
+                throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
+            }
 
             if (!coupon.Valid)
                 throw new BadRequestException(ApplicationMessages.EXPIRED_DISCOUNT);

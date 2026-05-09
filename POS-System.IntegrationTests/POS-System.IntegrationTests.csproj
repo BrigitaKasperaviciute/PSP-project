@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageReference Include="FluentAssertions" Version="6.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
+    <PackageReference Include="coverlet.collector" Version="3.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\POS-System.Api\POS-System.Api.csproj" />
+    <ProjectReference Include="..\POS-System.Business\POS-System.Business.csproj" />
+    <ProjectReference Include="..\POS-System.Data\POS-System.Data.csproj" />
+    <ProjectReference Include="..\POS-System.Common\POS-System.Common.csproj" />
+    <ProjectReference Include="..\POS-System.Domain\POS-System.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

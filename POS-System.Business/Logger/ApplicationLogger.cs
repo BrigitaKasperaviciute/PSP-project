@@ -43,11 +43,17 @@ namespace POS_System.Business.Logger
                 if (logLevel >= LogLevel.Warning)
                 {
                     string exceptionFilePath = GetTimestampedFilePath(options.Exceptions, ref _lastExceptionFileCreatedTime, ref _currentExceptionFileName);
+                    if (string.IsNullOrWhiteSpace(exceptionFilePath))
+                        return;
+
                     WriteLogToFile(exceptionFilePath, logEntry);
                 }
                 else
                 {
                     string eventFilePath = GetTimestampedFilePath(options.Events, ref _lastEventFileCreatedTime, ref _currentEventFileName);
+                    if (string.IsNullOrWhiteSpace(eventFilePath))
+                        return;
+
                     WriteLogToFile(eventFilePath, logEntry);
                 }
             }
@@ -67,6 +73,9 @@ namespace POS_System.Business.Logger
 
         private string GetTimestampedFilePath(LogFileOptions logFileOptions, ref DateTime lastFileCreatedTime, ref string _currentFileName)
         {
+            if (string.IsNullOrWhiteSpace(logFileOptions.Path))
+                return string.Empty;
+
             if (DateTime.UtcNow - lastFileCreatedTime > logFileOptions.FileCreationInterval)
             {
                 lastFileCreatedTime = DateTime.UtcNow;
