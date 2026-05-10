@@ -1,0 +1,10 @@
+{
+  "BusinessName": "Test POS Business",
+  "BusinessEmail": "test@business.com",
+  "BusinessPhone": "123456789",
+  "Country": "Lithuania",
+  "City": "Vilnius",
+  "Street": "Test Street",
+  "HouseNumber": 1,
+  "FlatNumber": null
+}
