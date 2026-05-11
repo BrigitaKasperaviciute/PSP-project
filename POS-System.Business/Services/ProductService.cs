@@ -15,7 +15,7 @@ namespace POS_System.Business.Services
         public async Task<PagedResponse<ProductResponse?>> GetProductsAsync(int pageSize, int pageNumber, bool? onlyActive, CancellationToken cancellationToken)
         {
             var (products, totalCount) = await _unitOfWork.ProductRepository.GetByExpressionWithPaginationAsync(
-                onlyActive is null ? null : x => x.IsDeleted != onlyActive,
+                onlyActive is true ? x => !x.IsDeleted : null,
                 pageSize,
                 pageNumber,
                 cancellationToken
@@ -75,6 +75,9 @@ namespace POS_System.Business.Services
             product.IsDeleted = false;
 
             await _unitOfWork.ProductRepository.CreateAsync(product, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            product.ProductId = product.Id;
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             var responseProductDto = _mapper.Map<ProductResponse>(product);

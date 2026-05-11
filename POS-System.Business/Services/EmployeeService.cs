@@ -22,7 +22,7 @@ namespace POS_System.Business.Services
         public async Task<PagedResponse<EmployeeResponse>> GetEmployeesAsync(int pageSize, int pageNumber, bool? onlyActive, CancellationToken cancellationToken)
         {
             var (response, totalCount) = await unitOfWork.EmployeeRepository.GetByExpressionWithPaginationAsync(
-                onlyActive is null ? null : r => r.IsDeleted != onlyActive,
+                onlyActive is true ? r => !r.IsDeleted : null,
                 pageSize,
                 pageNumber,
                 cancellationToken

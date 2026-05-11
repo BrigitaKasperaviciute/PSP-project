@@ -52,7 +52,7 @@ namespace POS_System.Business.Services
         public async Task<PagedResponse<ProductModificationResponse?>> GetProductModificationsAsync(int pageSize, int pageNumber, bool? onlyActive, CancellationToken cancellationToken)
         {
             var (productModifications, totalCount) = await _unitOfWork.ProductModificationRepository.GetByExpressionWithPaginationAsync(
-                onlyActive is null ? null : x => x.IsDeleted != onlyActive,
+                onlyActive is true ? x => !x.IsDeleted : null,
                 pageSize,
                 pageNumber,
                 cancellationToken

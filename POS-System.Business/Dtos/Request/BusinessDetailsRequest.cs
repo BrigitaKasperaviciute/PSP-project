@@ -5,6 +5,8 @@
         public required string BusinessName { get; set; }
         public required string BusinessEmail { get; set; }
         public required string BusinessPhone { get; set; }
+        public string OwnerName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public required string Country { get; set; }
         public required string City { get; set; }
         public required string Street { get; set; }

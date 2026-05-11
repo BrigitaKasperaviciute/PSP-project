@@ -17,6 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>POS-System.IntegrationTests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\POS-System.Business\POS-System.Business.csproj" />
     <ProjectReference Include="..\POS-System.Common\POS-System.Common.csproj" />
   </ItemGroup>
