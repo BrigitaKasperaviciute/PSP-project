@@ -12,8 +12,8 @@ namespace POS_System.Domain.Entities
         public int Id { get; set; }
 
         //Navigation properties
-        public virtual ICollection<ProductOnTax> ProductOnTaxes { get; set; }
-        public virtual ICollection<ServiceOnTax> ServiceOnTaxes { get; set; }
+        public virtual ICollection<ProductOnTax> ProductOnTaxes { get; set; } = new List<ProductOnTax>();
+        public virtual ICollection<ServiceOnTax> ServiceOnTaxes { get; set; } = new List<ServiceOnTax>();
 
 
         //Fields

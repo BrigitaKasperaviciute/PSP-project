@@ -16,6 +16,6 @@ namespace POS_System.Domain.Entities
         public required DateTime? EndDate { get; set; }
 
         //Navigation property
-        public virtual Service Service { get; set; }
+        public virtual Service? Service { get; set; }
     }
 }

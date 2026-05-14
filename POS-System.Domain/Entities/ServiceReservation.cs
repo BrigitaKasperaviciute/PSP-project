@@ -17,7 +17,7 @@ namespace POS_System.Domain.Entities
         public int? TimeSlotId { get; set; }
 
         //Navigation properties
-        public virtual CartItem CartItem { get; set; }
+        public virtual CartItem? CartItem { get; set; }
         public virtual TimeSlot? TimeSlot { get; set; }
 
         //Fields

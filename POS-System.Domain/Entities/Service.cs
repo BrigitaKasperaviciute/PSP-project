@@ -12,9 +12,9 @@ namespace POS_System.Domain.Entities
         public int Id { get; set; }
 
         //Navigation properties
-        public virtual ICollection<ServiceOnTax> ServiceOnTaxes { get; set; }
-        public virtual ICollection<ServiceOnItemDiscount> ServiceOnItemDiscounts { get; set; }
-        public virtual ICollection<EmployeeOnService> EmployeeOnServices { get; set; }
+        public virtual ICollection<ServiceOnTax> ServiceOnTaxes { get; set; } = new List<ServiceOnTax>();
+        public virtual ICollection<ServiceOnItemDiscount> ServiceOnItemDiscounts { get; set; } = new List<ServiceOnItemDiscount>();
+        public virtual ICollection<EmployeeOnService> EmployeeOnServices { get; set; } = new List<EmployeeOnService>();
 
         //Fields
         public int ServiceId { get; set; }

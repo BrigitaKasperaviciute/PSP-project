@@ -11,7 +11,7 @@ namespace POS_System.Domain.Entities.Generic
         public required DateTime? EndDate { get; set; }
 
         // Navigation properties
-        public virtual TLeft LeftEntity { get; set; }
-        public virtual TRight RightEntity { get; set; }
+        public virtual TLeft? LeftEntity { get; set; }
+        public virtual TRight? RightEntity { get; set; }
     }
 }

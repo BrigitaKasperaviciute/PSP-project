@@ -12,7 +12,7 @@ namespace POS_System.Domain.Entities
         public DateTime Id { get; set; }
         
         //Navigation properties
-        public virtual Cart Cart { get; set; }
+        public virtual Cart? Cart { get; set; }
 
         //Fields
         public int CartId { get; set; }

@@ -12,8 +12,8 @@ namespace POS_System.Domain.Entities
         public int Id { get; set; }
 
         //Navigation properties
-        public virtual ICollection<ProductOnItemDiscount> ProductOnItemDiscounts { get; set; }
-        public virtual ICollection<ServiceOnItemDiscount> ServiceOnItemDiscounts { get; set; }
+        public virtual ICollection<ProductOnItemDiscount> ProductOnItemDiscounts { get; set; } = new List<ProductOnItemDiscount>();
+        public virtual ICollection<ServiceOnItemDiscount> ServiceOnItemDiscounts { get; set; } = new List<ServiceOnItemDiscount>();
 
         //Fields
         public required int ItemDiscountId { get; set; }

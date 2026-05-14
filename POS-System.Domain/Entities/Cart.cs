@@ -17,8 +17,8 @@ namespace POS_System.Domain.Entities
         public int EmployeeVersionId { get; set; }
 
         //Navigation properties
-        public virtual CartDiscount CartDiscount { get; set; }
-        public virtual ICollection<CartItem> CartItems { get; set; }
+        public virtual CartDiscount? CartDiscount { get; set; }
+        public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 
         //Fields
         public string? CartDiscountId { get; set; }

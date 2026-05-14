@@ -21,7 +21,7 @@ public class CartItemService(IUnitOfWork _unitOfWork, IManyToManyService<Product
             cancellationToken,
             c => c.ServiceReservation);
 
-        var mappedCartItems = _mapper.Map<IEnumerable<CartItemResponse>>(cartItems);
+        var mappedCartItems = _mapper.Map<IEnumerable<CartItemResponse>>(cartItems)!;
         return new PagedResponse<CartItemResponse>(totalCount, pageSize, pageNum, mappedCartItems);
     }
 
@@ -35,7 +35,7 @@ public class CartItemService(IUnitOfWork _unitOfWork, IManyToManyService<Product
             c => c.ServiceReservation) 
             ?? throw new NotFoundException($"Item with id {id} is not in cart with id {cartId}.");
 
-        var response = _mapper.Map<CartItemResponse>(cartItem);
+        var response = _mapper.Map<CartItemResponse>(cartItem)!;
 
         return response;
     }
@@ -56,7 +56,7 @@ public class CartItemService(IUnitOfWork _unitOfWork, IManyToManyService<Product
         await _unitOfWork.CartItemRepository.CreateAsync(newCartItem, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<CartItemResponse>(newCartItem);
+        return _mapper.Map<CartItemResponse>(newCartItem)!;
     }
 
     public async Task<CartItemResponse> UpdateCartItemAsync(int cartId, int id, CartItemRequest CartItemRequest, CancellationToken cancellationToken)
@@ -70,7 +70,7 @@ public class CartItemService(IUnitOfWork _unitOfWork, IManyToManyService<Product
         _mapper.Map(CartItemRequest, cartItemToUpdate);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<CartItemResponse>(cartItemToUpdate);
+        return _mapper.Map<CartItemResponse>(cartItemToUpdate)!;
     }
 
     public async Task DeleteCartItemAsync(int cartId, int id, CancellationToken cancellationToken)

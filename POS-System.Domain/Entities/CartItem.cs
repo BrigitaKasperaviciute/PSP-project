@@ -19,9 +19,9 @@ namespace POS_System.Domain.Entities
         public int? ServiceVersionId { get; set; }
 
         //Navigational properties
-        public virtual ICollection<ProductModificationOnCartItem> ProductModificationsOnCartItem { get; set; }
-        public virtual Cart Cart { get; set; }
-        public virtual ServiceReservation ServiceReservation { get; set; }
+        public virtual ICollection<ProductModificationOnCartItem> ProductModificationsOnCartItem { get; set; } = new List<ProductModificationOnCartItem>();
+        public virtual Cart? Cart { get; set; }
+        public virtual ServiceReservation? ServiceReservation { get; set; }
 
         //Fields
         public int CartId { get; set; }

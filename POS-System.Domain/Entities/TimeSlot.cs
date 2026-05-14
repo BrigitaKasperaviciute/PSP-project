@@ -15,7 +15,7 @@ namespace POS_System.Domain.Entities
         public int EmployeeVersionId { get; set; }
 
         //Navigation properties
-        public virtual ServiceReservation ServiceReservation { get; set; }
+        public virtual ServiceReservation? ServiceReservation { get; set; }
 
         //Fields
         public required DateTime StartTime { get; set; }

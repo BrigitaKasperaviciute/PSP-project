@@ -12,9 +12,9 @@ namespace POS_System.Domain.Entities
         public int Id { get; set; }
 
         //Navigation properties
-        public virtual ICollection<ProductOnTax> ProductOnTaxes { get; set; }
-        public virtual ICollection<ProductOnItemDiscount> ProductOnItemDiscounts { get; set; }
-        public virtual ICollection<ProductModification> ProductModifications { get; set; }
+        public virtual ICollection<ProductOnTax> ProductOnTaxes { get; set; } = new List<ProductOnTax>();
+        public virtual ICollection<ProductOnItemDiscount> ProductOnItemDiscounts { get; set; } = new List<ProductOnItemDiscount>();
+        public virtual ICollection<ProductModification> ProductModifications { get; set; } = new List<ProductModification>();
 
         //Fields
         public int ProductId { get; set; }
