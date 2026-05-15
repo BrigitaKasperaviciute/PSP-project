@@ -71,6 +71,7 @@ namespace POS_System.Business.Services
 
             var newService = new Service
             {
+                ServiceId = serviceToUpdate.ServiceId,
                 Name = serviceRequest.Name,
                 Description = serviceRequest.Description,
                 Duration = serviceRequest.Duration,
@@ -143,7 +144,7 @@ namespace POS_System.Business.Services
 
                 if (service is not null)
                 {
-                    if ((itemDiscount.StartDate is null && itemDiscount.EndDate is null) || (itemDiscount.StartDate <= timeStamp && itemDiscount.EndDate >= timeStamp))
+                    if (timeStamp is null || (itemDiscount.StartDate is null && itemDiscount.EndDate is null) || (itemDiscount.StartDate <= timeStamp && itemDiscount.EndDate >= timeStamp))
                         services.Add(service);
                 }
             }

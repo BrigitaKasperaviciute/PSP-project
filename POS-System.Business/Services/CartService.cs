@@ -23,12 +23,8 @@ namespace POS_System.Business.Services.Services
 
         public async Task<CartResponse> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var cart = await _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken);
-            // TODO: add actual exception
-            if (cart is null)
-            {
-                throw new Exception("Cart not found.");
-            }
+            var cart = await _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken)
+                ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
             var mappedCart = _mapper.Map<CartResponse>(cart);
             return mappedCart;
         }
@@ -51,16 +47,10 @@ namespace POS_System.Business.Services.Services
 
         public async Task DeleteCartAsync(int id, CancellationToken cancellationToken)
         {
-            var cart = await _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken);
-            // TODO: add actual exception
-            if (cart is null)
-            {
-                throw new Exception("Cart not found.");
-            }
+            var cart = await _unitOfWork.CartRepository.GetByIdAsync(id, cancellationToken)
+                ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
             if (cart.Status != CartStatusEnum.IN_PROGRESS)
-            {
-                throw new Exception("Cannot delete a not in progress cart.");
-            }
+                throw new BadRequestException(ApplicationMessages.CART_NOT_IN_PROGRESS);
             _unitOfWork.CartRepository.Delete(cart);
             await _unitOfWork.SaveChangesAsync();
         }

@@ -28,6 +28,9 @@ namespace POS_System.Business.Services
     {
         public async Task<TransactionResponse> RegisterCashTransactionAsync(CashRequest cashRequest, CancellationToken token)
         {
+            var cart = await unitOfWork.CartRepository.GetByIdAsync(cashRequest.CartId, token)
+                ?? throw new NotFoundException(ApplicationMessages.NOT_FOUND_ERROR);
+
             var transaction = mapper.Map<Transaction>(cashRequest);
 
             transaction.Id = DateTime.UtcNow;

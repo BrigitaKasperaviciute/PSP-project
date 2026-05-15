@@ -51,7 +51,7 @@ namespace POS_System.Api.Controllers
         {
             var response = await _cartService.GetCartDiscountAsync(id, cancellationToken);
 
-            return Ok(response);
+            return new JsonResult(response);
         }
     }
 }

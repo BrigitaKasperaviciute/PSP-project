@@ -20,8 +20,6 @@ namespace POS_System.Business.Validators.ProductModification
                 .WithMessage("Description for product modification cannot exceed 255 characters.");
 
             RuleFor(x => x.Price)
-                .NotEmpty()
-                .WithMessage("Price value for product modification is required.")
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("Price value for product modification must be greater or equal to 0.");
         }
